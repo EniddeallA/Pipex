@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akhalid <akhalid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eniddealla <eniddealla@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 09:15:48 by akhalid           #+#    #+#             */
-/*   Updated: 2021/06/08 09:40:35 by akhalid          ###   ########.fr       */
+/*   Updated: 2021/06/13 00:44:00 by eniddealla       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,46 @@
 */
 
 
-void    pipex(int fd1, char *cmd1, char *cmd2, int fd2)
+
+void    pipex(t_pipex *p)
 {
-    
+    int child1;
+    int child2;
+    int *child1_status;
+    int *child2_status;
+
+    if ((child1 = fork()) == -1)
+        error_handler("Something went wrong while creating child1");
+    else if (child1 == 0)
+    {
+        execute_cmd1(p);
+        if ((child2 = fork()) == -1)
+            error_handler("Something went wrong creating child2");
+    }
+    else if(child2 == 0)
+        execute_cmd2(p);
+    else
+    {
+        wait_pid(child1, &child1_status, WCONTINUED);
+        wait_pid(child2, &child2_status, WCONTINUED);
+    }
 }
 
-
-int     main(int argc, char *argv[])
+int     main(int argc, char *argv[], char **env)
 {
-    int fd1;
-    int fd2;
+    t_pipex *p;
 
     if (argc == 5)
     {
-        if ((fd1 = open(argv[1], O_RDWR)) < 0 || (fd2 = open(argv[4], O_RDWR)) < 0)
-            error_handler("File doesn't exist.");
-        pipex(fd1, argv[2], argv[3], fd2);
-        close(fd1);
-        close(fd2);
+        p = (t_pipex *)malloc(sizeof(t_pipex));
+        if (pipe(p->fd) == - 1)
+            error_handler("Something went wrong using pipe()");
+        p->fd1 = open(argv[1], O_RDONLY);
+        p->fd2 = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
+        p->env = env;
+        p->cmd1 = argv[2];
+        p->cmd2 = argv[3];
+        pipex(p);
     }
     else
         error_handler("USAGE: '> ./pipex file1 cmd1 cmd2 file2'.");
