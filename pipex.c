@@ -6,7 +6,7 @@
 /*   By: eniddealla <eniddealla@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 09:15:48 by akhalid           #+#    #+#             */
-/*   Updated: 2021/06/13 00:44:00 by eniddealla       ###   ########.fr       */
+/*   Updated: 2021/06/13 03:07:50 by eniddealla       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,15 @@
 */
 
 
+void execute_cmd1(t_pipex *p)
+{
+    
+}
+
+void execute_cmd2(t_pipex *p)
+{
+    
+}
 
 void    pipex(t_pipex *p)
 {
@@ -42,6 +51,69 @@ void    pipex(t_pipex *p)
     }
 }
 
+void getpath(t_pipex **p, int cmd_n)
+{
+    int i;
+    char *new_path;
+    char **split_path;
+    char *cmd;
+
+    i = 0;
+    while((*p)->env[i])
+    {
+        if (!ft_strncmp("PATH=", (*p)->env[i], 6))
+        {
+            new_path = (char *)malloc(sizeof(char) * ft_strlen(ft_strrchr((*p)->env[i], '=')));
+            new_path = ft_strrchr((*p)->env[i], '=') + 1;
+            break;
+        }
+        i++;
+    }
+    split_path = ft_split(new_path, ':');
+    i = 0;
+    while (split_path[i])
+    {
+        if (cmd_n == 1)
+        {
+            cmd = ft_strjoin(split_path[i], (*p)->cmd1_args[0]);
+            if (open(cmd, O_RDONLY))
+            {
+                (*p)->cmd1 = ft_strdup(cmd);
+                free(cmd);
+                break;
+            }
+            free(cmd);
+        }
+        else if (cmd_n == 1)
+        {
+            cmd = ft_strjoin(split_path[i], (*p)->cmd2_args[0]);
+            if (open(cmd, O_RDONLY))
+            {
+                (*p)->cmd2 = ft_strdup(cmd);
+                free(cmd);
+                break;
+            }
+            free(cmd);
+        }
+        i++;
+    }
+    free(new_path);
+    i = 0;
+    while (split_path[i])
+        free(split_path[i]);
+    free(split_path);
+}
+
+void check_pipex(t_pipex **p)
+{
+    if ((*p)->fd1 < 0 || (*p)->fd2 < 0)
+        error_handler("Files can't be found or created.");
+    (*p)->cmd1_args = ft_split((*p)->cmd1, ' ');
+    getpath(p, 1);
+    (*p)->cmd2_args = ft_split((*p)->cmd1, ' ');
+    getpath(p, 2);
+}
+
 int     main(int argc, char *argv[], char **env)
 {
     t_pipex *p;
@@ -56,6 +128,7 @@ int     main(int argc, char *argv[], char **env)
         p->env = env;
         p->cmd1 = argv[2];
         p->cmd2 = argv[3];
+        check_pipex(&p);
         pipex(p);
     }
     else
