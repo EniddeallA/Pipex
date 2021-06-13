@@ -6,7 +6,7 @@
 /*   By: akhalid <akhalid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 09:15:48 by akhalid           #+#    #+#             */
-/*   Updated: 2021/06/13 06:49:34 by akhalid          ###   ########.fr       */
+/*   Updated: 2021/06/13 08:14:44 by akhalid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	execute_cmd1(t_pipex *p)
 {
 	dup2(p->fd1, 0);
 	dup2(p->fd[1], 1);
+	close(p->fd[1]);
 	close(p->fd[0]);
 	execve(p->cmd1, p->cmd1_args, p->env);
 	error_handler("Something went wrong executing cmd1.");
@@ -25,28 +26,27 @@ void	execute_cmd2(t_pipex *p)
 {
 	dup2(p->fd2, 1);
 	dup2(p->fd[0], 0);
-	close(p->fd[1]);
+	close(p->fd[0]);
 	execve(p->cmd2, p->cmd2_args, p->env);
 	error_handler("Something went wrong executing cmd2.");
 }
 
 void	pipex(t_pipex *p)
 {
-	int	child1;
-	int	child2;
+	int	pid;
 
-	child1 = fork();
-	if (child1 == -1)
+	pid = fork();
+	if (pid == -1)
 		error_handler("Something went wrong while creating child1");
-	else if (child1 == 0)
-	{
+	else if (pid == 0)
 		execute_cmd1(p);
-		child2 = fork();
-		if (child2 == -1)
-			error_handler("Something went wrong creating child2");
-	}
-	else
+	close(p->fd[1]);
+	pid = fork();
+	if (pid == 0)
 		execute_cmd2(p);
+	close(p->fd[0]);
+	wait(NULL);
+	wait(NULL);
 }
 
 void	check_pipex(t_pipex **p)
@@ -71,7 +71,7 @@ int	main(int argc, char *argv[], char **env)
 		if (pipe(p->fd) == -1)
 			error_handler("Something went wrong using Pipe.");
 		p->fd1 = open(argv[1], O_RDONLY);
-		p->fd2 = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
+		p->fd2 = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0666);
 		p->env = env;
 		p->cmd1 = argv[2];
 		p->cmd2 = argv[3];

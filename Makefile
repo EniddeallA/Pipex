@@ -6,7 +6,7 @@
 #    By: akhalid <akhalid@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/13 06:40:53 by akhalid           #+#    #+#              #
-#    Updated: 2021/06/13 06:45:40 by akhalid          ###   ########.fr        #
+#    Updated: 2021/06/13 06:54:03 by akhalid          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,6 @@ IDIR = ./includes/
 
 CFLAGS = -Wall -Wextra -Werror -g
 
-MLX = -lmlx -framework OpenGL -framework AppKit
 
 SRCS =	$(addprefix $(SDIR), $(SRC)) ./srcs/pipex.c
 
@@ -38,7 +37,7 @@ OBJS =	$(OBJDIR)/*.o
 all:	$(NAME)
 
 $(NAME):	$(OBJS)
-			$(CC) $(CFLAGS) -I $(IDIR) $(MLX) $(OBJS) -o $(NAME)
+			$(CC) $(CFLAGS) -I $(IDIR) $(OBJS) -o $(NAME)
 
 $(OBJS):	$(SRCS)
 			@$(CC) -c $(CFLAGS) $(SRCS)
