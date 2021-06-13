@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eniddealla <eniddealla@student.42.fr>      +#+  +:+       +#+        */
+/*   By: akhalid <akhalid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 09:15:48 by akhalid           #+#    #+#             */
-/*   Updated: 2021/06/13 05:17:07 by eniddealla       ###   ########.fr       */
+/*   Updated: 2021/06/13 06:05:49 by akhalid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,56 +56,58 @@ void    pipex(t_pipex *p)
         execute_cmd2(p);
 }
 
-void getpath(t_pipex **p, int cmd_n)
+char    *get_new_path(char **env)
 {
     int i;
     char *new_path;
-    char **split_path;
-    char *cmd;
-    int check;
 
     i = 0;
-    check = 0;
-    while((*p)->env[i])
+    while(env[i])
     {
-        if (!ft_strncmp("PATH", (*p)->env[i], 4))
+        if (!ft_strncmp("PATH", env[i], 4))
         {
-            new_path = (char *)malloc(sizeof(char) * ft_strlen(ft_strrchr((*p)->env[i], '=')));
-            new_path = ft_strrchr((*p)->env[i], '=') + 1;
+            new_path = (char *)malloc(sizeof(char) * ft_strlen(ft_strrchr(env[i], '=')));
+            new_path = ft_strrchr(env[i], '=') + 1;
             break;
         }
         i++;
     }
+    return (new_path);
+}
+
+int     concatenate_paths(char *path, char **cmd_n, char *arg)
+{
+    char *cmd;
+
+    cmd = ft_strjoin(path, "/");
+    cmd = ft_strjoin(cmd, arg);
+    if (open(cmd, O_RDONLY) > 0)
+    {
+        *cmd_n = ft_strdup(cmd);
+        free(cmd);
+        return (1);
+    }
+    free(cmd);
+    return (0);
+}
+
+void get_cmd_path(t_pipex **p, int cmd_n)
+{
+    int i;
+    char *new_path;
+    char **split_path;
+    int check;
+
+    check = 0;
+    new_path = get_new_path((*p)->env);
     split_path = ft_split(new_path, ':');
     i = 0;
-    while (split_path[i])
+    while (split_path[i] && !check)
     {
         if (cmd_n == 1)
-        {
-            cmd = ft_strjoin(split_path[i], "/");
-            cmd = ft_strjoin(cmd, (*p)->cmd1_args[0]);
-            if (open(cmd, O_RDONLY) > 0)
-            {
-                (*p)->cmd1 = ft_strdup(cmd);
-                free(cmd);
-                check = 1;
-                break;
-            }
-            free(cmd);
-        }
+            check = concatenate_paths(split_path[i], &(*p)->cmd1, (*p)->cmd1_args[0]);
         else if (cmd_n == 2)
-        {
-            cmd = ft_strjoin(split_path[i], "/");
-            cmd = ft_strjoin(cmd, (*p)->cmd2_args[0]);
-            if (open(cmd, O_RDONLY) > 0)
-            {
-                (*p)->cmd2 = ft_strdup(cmd);
-                free(cmd);
-                check = 1;
-                break;
-            }
-            free(cmd);
-        }
+            check = concatenate_paths(split_path[i], &(*p)->cmd2, (*p)->cmd2_args[0]);
         i++;
     }
     i = 0;
@@ -123,9 +125,9 @@ void check_pipex(t_pipex **p)
      if ((*p)->fd2 < 0)
         error_handler("Outfile can't be found or created.");
     (*p)->cmd1_args = ft_split((*p)->cmd1, ' ');
-    getpath(p, 1);
+    get_cmd_path(p, 1);
     (*p)->cmd2_args = ft_split((*p)->cmd2, ' ');
-    getpath(p, 2);
+    get_cmd_path(p, 2);
 }
 
 int     main(int argc, char *argv[], char **env)

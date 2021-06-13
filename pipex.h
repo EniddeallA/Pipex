@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eniddealla <eniddealla@student.42.fr>      +#+  +:+       +#+        */
+/*   By: akhalid <akhalid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 09:16:04 by akhalid           #+#    #+#             */
-/*   Updated: 2021/06/13 03:20:21 by eniddealla       ###   ########.fr       */
+/*   Updated: 2021/06/13 06:05:22 by akhalid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,11 @@ char	*ft_strdup(const char *s1);
     ** PIPEX
 */
 
-void pipex(t_pipex *p);
-void execute_cmd1(t_pipex *p);
-void execute_cmd2(t_pipex *p);
-void check_pipex(t_pipex **p);
+void    pipex(t_pipex *p);
+void    execute_cmd1(t_pipex *p);
+void    execute_cmd2(t_pipex *p);
+void    check_pipex(t_pipex **p);
+char    *get_new_path(char **env);
+int     concatenate_paths(char *path, char **cmd_n, char *arg);
 
 #endif
