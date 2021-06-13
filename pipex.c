@@ -6,7 +6,7 @@
 /*   By: eniddealla <eniddealla@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 09:15:48 by akhalid           #+#    #+#             */
-/*   Updated: 2021/06/13 03:56:23 by eniddealla       ###   ########.fr       */
+/*   Updated: 2021/06/13 03:59:53 by eniddealla       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,27 +29,26 @@ void execute_cmd2(t_pipex *p)
 
 void    pipex(t_pipex *p)
 {
-    // int child1;
-    // int child2;
-    // int *child1_status;
-    // int *child2_status;
+    int child1;
+    int child2;
+    int *child1_status;
+    int *child2_status;
 
-    // if ((child1 = fork()) == -1)
-    //     error_handler("Something went wrong while creating child1");
-    // else if (child1 == 0)
-    // {
-    //     execute_cmd1(p);
-    //     if ((child2 = fork()) == -1)
-    //         error_handler("Something went wrong creating child2");
-    // }
-    // else if(child2 == 0)
-    //     execute_cmd2(p);
-    // else
-    // {
-    //     wait_pid(child1, &child1_status, WCONTINUED);
-    //     wait_pid(child2, &child2_status, WCONTINUED);
-    // }
-    printf("%s\n%s\n", p->cmd1, p->cmd2);
+    if ((child1 = fork()) == -1)
+        error_handler("Something went wrong while creating child1");
+    else if (child1 == 0)
+    {
+        execute_cmd1(p);
+        if ((child2 = fork()) == -1)
+            error_handler("Something went wrong creating child2");
+    }
+    else if(child2 == 0)
+        execute_cmd2(p);
+    else
+    {
+        wait_pid(child1, &child1_status, WCONTINUED);
+        wait_pid(child2, &child2_status, WCONTINUED);
+    }
 }
 
 void getpath(t_pipex **p, int cmd_n)
@@ -58,8 +57,10 @@ void getpath(t_pipex **p, int cmd_n)
     char *new_path;
     char **split_path;
     char *cmd;
+    int check;
 
     i = 0;
+    check = 0;
     while((*p)->env[i])
     {
         if (i == 91)
@@ -85,6 +86,7 @@ void getpath(t_pipex **p, int cmd_n)
                 (*p)->cmd1 = ft_strdup(cmd);
                 free(cmd);
                 break;
+                check = 1;
             }
             free(cmd);
         }
@@ -97,6 +99,7 @@ void getpath(t_pipex **p, int cmd_n)
                 (*p)->cmd2 = ft_strdup(cmd);
                 free(cmd);
                 break;
+                check = 1;
             }
             free(cmd);
         }
@@ -106,16 +109,16 @@ void getpath(t_pipex **p, int cmd_n)
     while (split_path[i])
         free(split_path[i++]);
     free(split_path);
+    if (!check)
+        error_handler("Command not found.");
 }
 
 void check_pipex(t_pipex **p)
 {
-    // if ((*p)->fd1 < 0 || (*p)->fd2 < 0)
-    //     error_handler("Files can't be found or created.");
      if ((*p)->fd1 < 0)
-        error_handler("Files 1 can't be found or created.");
+        error_handler("Infile can't be found or created.");
      if ((*p)->fd2 < 0)
-        error_handler("Files 2 can't be found or created.");
+        error_handler("Outfile can't be found or created.");
     (*p)->cmd1_args = ft_split((*p)->cmd1, ' ');
     getpath(p, 1);
     (*p)->cmd2_args = ft_split((*p)->cmd2, ' ');
