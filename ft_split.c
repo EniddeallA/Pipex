@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eniddealla <eniddealla@student.42.fr>      +#+  +:+       +#+        */
+/*   By: akhalid <akhalid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/13 02:46:53 by eniddealla        #+#    #+#             */
-/*   Updated: 2021/06/13 03:20:51 by eniddealla       ###   ########.fr       */
+/*   Updated: 2021/06/13 06:36:08 by akhalid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static	int		wordcount(char *s, char c)
+static	int	wordcount(char *s, char c)
 {
-	int wc;
+	int	wc;
 
 	if (!*s)
 		return (0);
@@ -28,12 +28,13 @@ static	int		wordcount(char *s, char c)
 	return (wc);
 }
 
-static	int		*wordlength(char *s, char c, int wc)
+static	int	*wordlength(char *s, char c, int wc)
 {
-	int *wl;
-	int i;
+	int	*wl;
+	int	i;
 
-	if (((wl = (int*)malloc(sizeof(int) * wc)) == 0) || !s)
+	wl = (int *)malloc(sizeof(int) * wc);
+	if ((wl == 0) || !s)
 		return (0);
 	i = 0;
 	while (*s && wc--)
@@ -60,12 +61,13 @@ static	void	*garbage(char **split, int i)
 
 static	char	**spliit(char *ss, char c, char **split, int wc)
 {
-	int i;
-	int j;
-	int *wl;
+	int	i;
+	int	j;
+	int	*wl;
 
 	i = 0;
-	if ((wl = wordlength(ss, c, wc)) == 0)
+	wl = wordlength(ss, c, wc);
+	if (wl == 0)
 		return (0);
 	while (i < wc)
 	{
@@ -74,8 +76,7 @@ static	char	**spliit(char *ss, char c, char **split, int wc)
 			ss++;
 		if (*ss != c && *ss)
 		{
-			if ((split[i] = (char*)malloc(wl[i] + 1)) == 0)
-				return (garbage(split, i));
+			split[i] = (char *)malloc(wl[i] + 1);
 			while (*ss != c && *ss)
 				split[i][j++] = *ss++;
 			split[i][j] = '\0';
@@ -86,7 +87,7 @@ static	char	**spliit(char *ss, char c, char **split, int wc)
 	return (split);
 }
 
-char			**ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
 	char	**split;
 	char	*ss;
@@ -96,7 +97,8 @@ char			**ft_split(char const *s, char c)
 	if (!ss)
 		return (0);
 	wc = wordcount(ss, c);
-	if (((split = (char**)malloc(sizeof(char*) * (wc + 1))) == 0))
+	split = (char **)malloc(sizeof(char *) * (wc + 1));
+	if (split == 0)
 		return (0);
 	return (spliit(ss, c, split, wc));
 }

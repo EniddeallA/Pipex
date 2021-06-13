@@ -3,114 +3,84 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eniddealla <eniddealla@student.42.fr>      +#+  +:+       +#+        */
+/*   By: akhalid <akhalid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/08 09:20:19 by akhalid           #+#    #+#             */
-/*   Updated: 2021/06/13 03:22:26 by eniddealla       ###   ########.fr       */
+/*   Created: 2021/06/13 06:06:59 by akhalid           #+#    #+#             */
+/*   Updated: 2021/06/13 06:22:56 by akhalid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int     ft_strlen(char *s)
+char	*get_new_path(char **env)
 {
-    int i;
-
-    i = 0;
-    while (s[i])
-        i++;
-    return (i);
-}
-
-char	*ft_strdup(const char *s1)
-{
-	char	*s;
-	char	*dp;
 	int		i;
+	char	*new_path;
 
-	s = (char *)s1;
-	if ((dp = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1))) == 0)
-		return (0);
-	if (!s)
-	{
-		*dp = '\0';
-		return (dp);
-	}
 	i = 0;
-	while (*s)
+	while (env[i])
 	{
-		dp[i] = *s;
-		s++;
+		if (!ft_strncmp("PATH", env[i], 4))
+		{
+			new_path = (char *)malloc(sizeof(char)
+					* ft_strlen(ft_strrchr(env[i], '=')));
+			new_path = ft_strrchr(env[i], '=') + 1;
+			break ;
+		}
 		i++;
 	}
-	dp[i] = '\0';
-	return (dp);
+	return (new_path);
 }
 
-int     ft_strncmp(const char *s1, const char *s2, size_t n)
+int	concatenate_paths(char *path, char **cmd_n, char *arg)
 {
-	unsigned	char	*ss1;
-	unsigned	char	*ss2;
+	char	*cmd;
 
-	ss1 = (unsigned char *)s1;
-	ss2 = (unsigned char *)s2;
-	while (n-- > 0)
+	cmd = ft_strjoin(path, "/");
+	cmd = ft_strjoin(cmd, arg);
+	if (open(cmd, O_RDONLY) > 0)
 	{
-		if (*ss1 != *ss2)
-			return (*ss1 - *ss2);
-		if (!*ss1)
-			return (0);
-		ss1++;
-		ss2++;
+		*cmd_n = ft_strdup(cmd);
+		free(cmd);
+		return (1);
 	}
+	free(cmd);
 	return (0);
 }
 
-char	*ft_strrchr(const char *s, int c)
+void	get_cmd_path(t_pipex **p, int cmd_n)
 {
 	int		i;
-	char	*ss;
+	char	*new_path;
+	char	**split_path;
+	int		check;
 
-	ss = (char *)s;
-	i = ft_strlen(ss);
-	while (i >= 0)
+	check = 0;
+	new_path = get_new_path((*p)->env);
+	split_path = ft_split(new_path, ':');
+	i = 0;
+	while (split_path[i] && !check)
 	{
-		if (ss[i] == (char)c)
-			return (&ss[i]);
-		i--;
+		if (cmd_n == 1)
+			check = concatenate_paths(split_path[i], &(*p)->cmd1,
+					(*p)->cmd1_args[0]);
+		else if (cmd_n == 2)
+			check = concatenate_paths(split_path[i], &(*p)->cmd2,
+					(*p)->cmd2_args[0]);
+		i++;
 	}
-	return (0);
+	i = 0;
+	while (split_path[i])
+		free(split_path[i++]);
+	free(split_path);
+	if (!check)
+		error_handler("Command not found.");
 }
 
-char    *ft_strjoin(char const *s1, char const *s2)
+void	error_handler(char *str)
 {
-	char	*ss1;
-	char	*ss2;
-	char	*join;
-	int		i;
-
-	ss1 = (char *)s1;
-	ss2 = (char *)s2;
-	if (ss1 && ss2)
-	{
-		if ((join = (char *)malloc(sizeof(char) *
-						(ft_strlen(ss1) + ft_strlen(ss2) + 1))) == 0)
-			return (0);
-		i = 0;
-		while (*ss1)
-			join[i++] = *ss1++;
-		while (*ss2)
-			join[i++] = *ss2++;
-		join[i] = '\0';
-		return (join);
-	}
-	return (0);
-}
-
-void    error_handler(char *str)
-{
-    write(1, "Error:", 7);
-    write(1, str, ft_strlen(str));
-    write(1, "\n", 1);
-    exit(2);
+	write(1, "Error:", 7);
+	write(1, str, ft_strlen(str));
+	write(1, "\n", 1);
+	exit(2);
 }
