@@ -6,7 +6,7 @@
 /*   By: akhalid <akhalid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/13 06:06:59 by akhalid           #+#    #+#             */
-/*   Updated: 2021/06/13 07:43:37 by akhalid          ###   ########.fr       */
+/*   Updated: 2021/06/13 08:49:58 by akhalid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,13 @@ void	get_cmd_path(t_pipex **p, int cmd_n)
 		free(split_path[i++]);
 	free(split_path);
 	if (!check)
-		error_handler("Command not found.");
+		error_handler("Command not found.", 127);
 }
 
-void	error_handler(char *str)
+void	error_handler(char *str, int err)
 {
-	write(1, "Error:", 7);
+	write(1, "Error: ", 8);
 	write(1, str, ft_strlen(str));
 	write(1, "\n", 1);
-	exit(2);
+	exit(err);
 }

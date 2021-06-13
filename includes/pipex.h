@@ -6,7 +6,7 @@
 /*   By: akhalid <akhalid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 09:16:04 by akhalid           #+#    #+#             */
-/*   Updated: 2021/06/13 06:40:28 by akhalid          ###   ########.fr       */
+/*   Updated: 2021/06/13 08:48:18 by akhalid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <stdlib.h>
+# include <errno.h>
+# include <string.h>
 
 typedef struct s_pipex
 {
@@ -59,6 +61,6 @@ void	check_pipex(t_pipex **p);
 void	get_cmd_path(t_pipex **p, int cmd_n);
 char	*get_new_path(char **env);
 int		concatenate_paths(char *path, char **cmd_n, char *arg);
-void	error_handler(char *str);
+void	error_handler(char *str, int err);
 
 #endif
