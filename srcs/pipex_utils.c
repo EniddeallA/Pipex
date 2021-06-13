@@ -6,7 +6,7 @@
 /*   By: akhalid <akhalid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/13 06:06:59 by akhalid           #+#    #+#             */
-/*   Updated: 2021/06/13 10:13:31 by akhalid          ###   ########.fr       */
+/*   Updated: 2021/06/13 16:47:57 by akhalid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,12 @@ char	*get_new_path(char **env)
 	new_path = NULL;
 	while (env[i])
 	{
-		if (!ft_strncmp("PATH", env[i], 4))
+		if (!ft_strncmp("PATH=", env[i], 5))
 		{
 			new_path = (char *)malloc(sizeof(char)
-					* ft_strlen(ft_strrchr(env[i], '=')));
+					* (ft_strlen(ft_strrchr(env[i], '=')) + 1));
 			new_path = ft_strrchr(env[i], '=') + 1;
+			printf("%d %d\n", ft_strlen(new_path), ft_strlen(ft_strrchr(env[i], '=') + 1));
 			break ;
 		}
 		i++;
