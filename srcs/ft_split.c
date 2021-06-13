@@ -6,92 +6,95 @@
 /*   By: akhalid <akhalid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/13 02:46:53 by eniddealla        #+#    #+#             */
-/*   Updated: 2021/06/13 06:50:45 by akhalid          ###   ########.fr       */
+/*   Updated: 2021/06/13 10:10:45 by akhalid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
 
-static	int	wordcount(char *s, char c)
+static void	ft_bzero(void *s, size_t n)
 {
-	int	wc;
+	char	*ptr;
+	size_t	i;
 
-	if (!*s)
-		return (0);
-	wc = 0;
-	while (*s)
-	{
-		if ((*s != c) && (*(s + 1) == c || *(s + 1) == '\0'))
-			wc++;
-		s++;
-	}
-	return (wc);
+	if (!n)
+		return ;
+	ptr = s;
+	i = 0;
+	while (i < n)
+		*(ptr + i++) = 0;
 }
 
-static	int	*wordlength(char *s, char c, int wc)
+static char	*ft_strnew(size_t size)
 {
-	int	*wl;
-	int	i;
+	char	*str;
 
-	wl = (int *)malloc(sizeof(int) * wc);
-	if ((wl == 0) || !s)
-		return (0);
-	i = 0;
-	while (*s && wc--)
-	{
-		wl[i] = 0;
-		while (*s == c)
-			s++;
-		while (*s != c && *s)
-		{
-			s++;
-			wl[i]++;
-		}
-		i++;
-	}
-	return (wl);
+	str = (char *)malloc(sizeof(char) * size + 1);
+	if (!str)
+		return (NULL);
+	ft_bzero(str, size + 1);
+	return (str);
 }
 
-static	char	**spliit(char *ss, char c, char **split, int wc)
+static int	ft_countwords(char const *str, char c)
 {
+	int count;
 	int	i;
-	int	j;
-	int	*wl;
 
 	i = 0;
-	wl = wordlength(ss, c, wc);
-	if (wl == 0)
-		return (0);
-	while (i < wc)
+	count = 0;
+	while (str[i])
 	{
-		j = 0;
-		while (*ss == c)
-			ss++;
-		if (*ss != c && *ss)
-		{
-			split[i] = (char *)malloc(wl[i] + 1);
-			while (*ss != c && *ss)
-				split[i][j++] = *ss++;
-			split[i][j] = '\0';
-		}
-		i++;
+		while (str[i] == c)
+			i++;
+		if (str[i] != c && str[i] != '\0')
+			count++;
+		while (str[i] != c && str[i] != '\0')
+			i++;
 	}
-	split[i] = 0;
-	return (split);
+	return (count);
+}
+
+static int	get_word_len(char const *str, char c)
+{
+	int	i;
+	int	len;
+
+	i = 0;
+	len = 0;
+	while (str[i] == c)
+		i++;
+	while (str[i] != c && str[i] != '\0')
+	{
+		i++;
+		len++;
+	}
+	return (len);
 }
 
 char	**ft_split(char const *s, char c)
 {
-	char	**split;
-	char	*ss;
-	int		wc;
+	int		i;
+	int		j;
+	int		k;
+	char	**str2;
 
-	ss = (char *)s;
-	if (!ss)
-		return (0);
-	wc = wordcount(ss, c);
-	split = (char **)malloc(sizeof(char *) * (wc + 1));
-	if (split == 0)
-		return (0);
-	return (spliit(ss, c, split, wc));
+	if (!s || !(str2 = (char **)malloc(sizeof(*str2) *
+		(ft_countwords(s, c) + 1))))
+		return (NULL);
+	i = -1;
+	j = 0;
+	while (++i < ft_countwords(s, c))
+	{
+		k = 0;
+		if (!(str2[i] = ft_strnew(get_word_len(&s[j], c) + 1)))
+			str2[i] = NULL;
+		while (s[j] == c)
+			j++;
+		while (s[j] != c && s[j])
+			str2[i][k++] = s[j++];
+		str2[i][k] = '\0';
+	}
+	str2[i] = 0;
+	return (str2);
 }
