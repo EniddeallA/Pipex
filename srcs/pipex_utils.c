@@ -6,11 +6,11 @@
 /*   By: akhalid <akhalid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/13 06:06:59 by akhalid           #+#    #+#             */
-/*   Updated: 2021/06/13 06:22:56 by akhalid          ###   ########.fr       */
+/*   Updated: 2021/06/13 06:50:32 by akhalid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../includes/pipex.h"
 
 char	*get_new_path(char **env)
 {
@@ -18,6 +18,7 @@ char	*get_new_path(char **env)
 	char	*new_path;
 
 	i = 0;
+	new_path = NULL;
 	while (env[i])
 	{
 		if (!ft_strncmp("PATH", env[i], 4))

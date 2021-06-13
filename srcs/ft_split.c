@@ -6,11 +6,11 @@
 /*   By: akhalid <akhalid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/13 02:46:53 by eniddealla        #+#    #+#             */
-/*   Updated: 2021/06/13 06:36:08 by akhalid          ###   ########.fr       */
+/*   Updated: 2021/06/13 06:50:45 by akhalid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../includes/pipex.h"
 
 static	int	wordcount(char *s, char c)
 {
@@ -50,13 +50,6 @@ static	int	*wordlength(char *s, char c, int wc)
 		i++;
 	}
 	return (wl);
-}
-
-static	void	*garbage(char **split, int i)
-{
-	while (i >= 0)
-		free(split[i--]);
-	return (0);
 }
 
 static	char	**spliit(char *ss, char c, char **split, int wc)

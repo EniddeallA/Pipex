@@ -6,11 +6,11 @@
 /*   By: akhalid <akhalid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 09:20:19 by akhalid           #+#    #+#             */
-/*   Updated: 2021/06/13 06:36:22 by akhalid          ###   ########.fr       */
+/*   Updated: 2021/06/13 06:45:05 by akhalid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../includes/pipex.h"
 
 int	ft_strlen(char *s)
 {

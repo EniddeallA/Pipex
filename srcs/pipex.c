@@ -6,11 +6,11 @@
 /*   By: akhalid <akhalid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 09:15:48 by akhalid           #+#    #+#             */
-/*   Updated: 2021/06/13 06:34:38 by akhalid          ###   ########.fr       */
+/*   Updated: 2021/06/13 06:49:34 by akhalid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../includes/pipex.h"
 
 void	execute_cmd1(t_pipex *p)
 {
@@ -34,8 +34,6 @@ void	pipex(t_pipex *p)
 {
 	int	child1;
 	int	child2;
-	int	child1_status;
-	int	child2_status;
 
 	child1 = fork();
 	if (child1 == -1)
