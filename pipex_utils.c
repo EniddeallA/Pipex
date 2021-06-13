@@ -6,7 +6,7 @@
 /*   By: eniddealla <eniddealla@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 09:20:19 by akhalid           #+#    #+#             */
-/*   Updated: 2021/06/13 03:01:58 by eniddealla       ###   ########.fr       */
+/*   Updated: 2021/06/13 03:22:26 by eniddealla       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,31 @@ int     ft_strlen(char *s)
     while (s[i])
         i++;
     return (i);
+}
+
+char	*ft_strdup(const char *s1)
+{
+	char	*s;
+	char	*dp;
+	int		i;
+
+	s = (char *)s1;
+	if ((dp = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1))) == 0)
+		return (0);
+	if (!s)
+	{
+		*dp = '\0';
+		return (dp);
+	}
+	i = 0;
+	while (*s)
+	{
+		dp[i] = *s;
+		s++;
+		i++;
+	}
+	dp[i] = '\0';
+	return (dp);
 }
 
 int     ft_strncmp(const char *s1, const char *s2, size_t n)
@@ -85,7 +110,7 @@ char    *ft_strjoin(char const *s1, char const *s2)
 void    error_handler(char *str)
 {
     write(1, "Error:", 7);
-    write(1, &str, ft_strlen(str));
+    write(1, str, ft_strlen(str));
     write(1, "\n", 1);
     exit(2);
 }

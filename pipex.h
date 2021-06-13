@@ -6,7 +6,7 @@
 /*   By: eniddealla <eniddealla@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 09:16:04 by akhalid           #+#    #+#             */
-/*   Updated: 2021/06/13 03:01:55 by eniddealla       ###   ########.fr       */
+/*   Updated: 2021/06/13 03:20:21 by eniddealla       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdio.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <stdlib.h>
 
 typedef struct  s_pipex
 {
@@ -42,6 +43,7 @@ void    error_handler(char *str);
 char    **ft_split(char const *s, char c);
 int     ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strrchr(const char *s, int c);
+char	*ft_strdup(const char *s1);
 
 /*
     ** PIPEX

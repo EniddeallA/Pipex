@@ -6,9 +6,11 @@
 /*   By: eniddealla <eniddealla@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/13 02:46:53 by eniddealla        #+#    #+#             */
-/*   Updated: 2021/06/13 02:46:54 by eniddealla       ###   ########.fr       */
+/*   Updated: 2021/06/13 03:20:51 by eniddealla       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "pipex.h"
 
 static	int		wordcount(char *s, char c)
 {

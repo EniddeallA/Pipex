@@ -6,7 +6,7 @@
 /*   By: eniddealla <eniddealla@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 09:15:48 by akhalid           #+#    #+#             */
-/*   Updated: 2021/06/13 03:07:50 by eniddealla       ###   ########.fr       */
+/*   Updated: 2021/06/13 03:56:23 by eniddealla       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,26 +29,27 @@ void execute_cmd2(t_pipex *p)
 
 void    pipex(t_pipex *p)
 {
-    int child1;
-    int child2;
-    int *child1_status;
-    int *child2_status;
+    // int child1;
+    // int child2;
+    // int *child1_status;
+    // int *child2_status;
 
-    if ((child1 = fork()) == -1)
-        error_handler("Something went wrong while creating child1");
-    else if (child1 == 0)
-    {
-        execute_cmd1(p);
-        if ((child2 = fork()) == -1)
-            error_handler("Something went wrong creating child2");
-    }
-    else if(child2 == 0)
-        execute_cmd2(p);
-    else
-    {
-        wait_pid(child1, &child1_status, WCONTINUED);
-        wait_pid(child2, &child2_status, WCONTINUED);
-    }
+    // if ((child1 = fork()) == -1)
+    //     error_handler("Something went wrong while creating child1");
+    // else if (child1 == 0)
+    // {
+    //     execute_cmd1(p);
+    //     if ((child2 = fork()) == -1)
+    //         error_handler("Something went wrong creating child2");
+    // }
+    // else if(child2 == 0)
+    //     execute_cmd2(p);
+    // else
+    // {
+    //     wait_pid(child1, &child1_status, WCONTINUED);
+    //     wait_pid(child2, &child2_status, WCONTINUED);
+    // }
+    printf("%s\n%s\n", p->cmd1, p->cmd2);
 }
 
 void getpath(t_pipex **p, int cmd_n)
@@ -61,7 +62,9 @@ void getpath(t_pipex **p, int cmd_n)
     i = 0;
     while((*p)->env[i])
     {
-        if (!ft_strncmp("PATH=", (*p)->env[i], 6))
+        if (i == 91)
+            printf("k");
+        if (!ft_strncmp("PATH", (*p)->env[i], 4))
         {
             new_path = (char *)malloc(sizeof(char) * ft_strlen(ft_strrchr((*p)->env[i], '=')));
             new_path = ft_strrchr((*p)->env[i], '=') + 1;
@@ -75,8 +78,9 @@ void getpath(t_pipex **p, int cmd_n)
     {
         if (cmd_n == 1)
         {
-            cmd = ft_strjoin(split_path[i], (*p)->cmd1_args[0]);
-            if (open(cmd, O_RDONLY))
+            cmd = ft_strjoin(split_path[i], "/");
+            cmd = ft_strjoin(cmd, (*p)->cmd1_args[0]);
+            if (open(cmd, O_RDONLY) > 0)
             {
                 (*p)->cmd1 = ft_strdup(cmd);
                 free(cmd);
@@ -84,10 +88,11 @@ void getpath(t_pipex **p, int cmd_n)
             }
             free(cmd);
         }
-        else if (cmd_n == 1)
+        else if (cmd_n == 2)
         {
-            cmd = ft_strjoin(split_path[i], (*p)->cmd2_args[0]);
-            if (open(cmd, O_RDONLY))
+            cmd = ft_strjoin(split_path[i], "/");
+            cmd = ft_strjoin(cmd, (*p)->cmd2_args[0]);
+            if (open(cmd, O_RDONLY) > 0)
             {
                 (*p)->cmd2 = ft_strdup(cmd);
                 free(cmd);
@@ -97,20 +102,23 @@ void getpath(t_pipex **p, int cmd_n)
         }
         i++;
     }
-    free(new_path);
     i = 0;
     while (split_path[i])
-        free(split_path[i]);
+        free(split_path[i++]);
     free(split_path);
 }
 
 void check_pipex(t_pipex **p)
 {
-    if ((*p)->fd1 < 0 || (*p)->fd2 < 0)
-        error_handler("Files can't be found or created.");
+    // if ((*p)->fd1 < 0 || (*p)->fd2 < 0)
+    //     error_handler("Files can't be found or created.");
+     if ((*p)->fd1 < 0)
+        error_handler("Files 1 can't be found or created.");
+     if ((*p)->fd2 < 0)
+        error_handler("Files 2 can't be found or created.");
     (*p)->cmd1_args = ft_split((*p)->cmd1, ' ');
     getpath(p, 1);
-    (*p)->cmd2_args = ft_split((*p)->cmd1, ' ');
+    (*p)->cmd2_args = ft_split((*p)->cmd2, ' ');
     getpath(p, 2);
 }
 
