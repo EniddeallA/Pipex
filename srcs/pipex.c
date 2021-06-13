@@ -6,7 +6,7 @@
 /*   By: akhalid <akhalid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 09:15:48 by akhalid           #+#    #+#             */
-/*   Updated: 2021/06/13 08:49:16 by akhalid          ###   ########.fr       */
+/*   Updated: 2021/06/13 10:14:37 by akhalid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,6 @@ int	main(int argc, char *argv[], char **env)
 	}
 	else
 		error_handler("USAGE: '> ./pipex file1 cmd1 cmd2 file2'.", 1);
+	while(1);
 	return (0);
 }
