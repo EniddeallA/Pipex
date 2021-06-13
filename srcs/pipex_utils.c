@@ -6,7 +6,7 @@
 /*   By: akhalid <akhalid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/13 06:06:59 by akhalid           #+#    #+#             */
-/*   Updated: 2021/06/13 10:11:32 by akhalid          ###   ########.fr       */
+/*   Updated: 2021/06/13 08:49:58 by akhalid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,9 @@ char	*get_new_path(char **env)
 int	concatenate_paths(char *path, char **cmd_n, char *arg)
 {
 	char	*cmd;
-	char	*tmp;
 
 	cmd = ft_strjoin(path, "/");
-	tmp = cmd;
 	cmd = ft_strjoin(cmd, arg);
-	free(tmp);
 	if (open(cmd, O_RDONLY) > 0)
 	{
 		*cmd_n = ft_strdup(cmd);
