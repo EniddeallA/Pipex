@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eniddealla <eniddealla@student.42.fr>      +#+  +:+       +#+        */
+/*   By: akhalid <akhalid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 09:15:48 by akhalid           #+#    #+#             */
-/*   Updated: 2021/06/16 02:45:36 by eniddealla       ###   ########.fr       */
+/*   Updated: 2021/06/16 05:21:47 by akhalid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int	main(int argc, char *argv[], char **env)
 {
 	t_pipex	*p;
 
+	p = NULL;
 	if (argc == 5)
 	{
 		p = (t_pipex *)malloc(sizeof(t_pipex));
