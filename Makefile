@@ -6,7 +6,7 @@
 #    By: akhalid <akhalid@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/13 06:40:53 by akhalid           #+#    #+#              #
-#    Updated: 2021/06/13 06:54:03 by akhalid          ###   ########.fr        #
+#    Updated: 2021/06/16 11:27:06 by akhalid          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,4 +52,4 @@ fclean: clean
 
 re:	fclean all
 
-.PHONY:	all, clean, fclean, re, bonus
+.PHONY:	all, clean, fclean, re
