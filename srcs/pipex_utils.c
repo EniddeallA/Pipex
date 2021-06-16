@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akhalid <akhalid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eniddealla <eniddealla@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/13 06:06:59 by akhalid           #+#    #+#             */
-/*   Updated: 2021/06/13 18:49:58 by akhalid          ###   ########.fr       */
+/*   Updated: 2021/06/16 02:31:05 by eniddealla       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ char	*get_new_path(char **env)
 		if (!ft_strncmp("PATH=", env[i], 5))
 		{
 			new_path = ft_strdup(ft_strrchr(env[i], '=') + 1);
-			//printf("%d %d\n", ft_strlen(new_path), ft_strlen(ft_strrchr(env[i], '=') + 1));
 			break ;
 		}
 		i++;

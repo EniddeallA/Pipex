@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akhalid <akhalid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: eniddealla <eniddealla@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 09:16:04 by akhalid           #+#    #+#             */
-/*   Updated: 2021/06/13 08:48:18 by akhalid          ###   ########.fr       */
+/*   Updated: 2021/06/16 02:36:11 by eniddealla       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct s_pipex
 	char	**cmd2_args;
 	char	**env;
 	int		fd[2];
+	int		fd_status;
 }				t_pipex;
 
 /*
