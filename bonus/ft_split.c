@@ -6,11 +6,11 @@
 /*   By: akhalid <akhalid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/13 02:46:53 by eniddealla        #+#    #+#             */
-/*   Updated: 2021/06/18 06:30:52 by akhalid          ###   ########.fr       */
+/*   Updated: 2021/06/18 06:34:11 by akhalid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
+#include "pipex_bonus.h"
 
 static void	ft_bzero(void *s, size_t n)
 {
