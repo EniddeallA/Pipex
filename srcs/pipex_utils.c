@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eniddealla <eniddealla@student.42.fr>      +#+  +:+       +#+        */
+/*   By: akhalid <akhalid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/13 06:06:59 by akhalid           #+#    #+#             */
-/*   Updated: 2021/06/16 02:31:05 by eniddealla       ###   ########.fr       */
+/*   Updated: 2021/06/16 07:46:30 by akhalid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ char	*get_new_path(char **env)
 	}
 	return (new_path);
 }
+
 int	concatenate_paths(char *path, char **cmd_n, char *arg)
 {
 	char	*cmd;
@@ -63,12 +64,11 @@ void	get_cmd_path(t_pipex **p, int cmd_n)
 	while (split_path[i] && !check)
 	{
 		if (cmd_n == 1)
-			check = concatenate_paths(split_path[i], &(*p)->cmd1,
+			check = concatenate_paths(split_path[i++], &(*p)->cmd1,
 					(*p)->cmd1_args[0]);
 		else if (cmd_n == 2)
-			check = concatenate_paths(split_path[i], &(*p)->cmd2,
+			check = concatenate_paths(split_path[i++], &(*p)->cmd2,
 					(*p)->cmd2_args[0]);
-		i++;
 	}
 	free(new_path);
 	i = 0;

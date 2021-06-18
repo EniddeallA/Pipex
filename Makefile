@@ -6,7 +6,7 @@
 #    By: eniddealla <eniddealla@student.42.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/13 06:40:53 by akhalid           #+#    #+#              #
-#    Updated: 2021/06/16 02:53:54 by eniddealla       ###   ########.fr        #
+#    Updated: 2021/06/18 22:19:58 by eniddealla       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,4 +52,4 @@ fclean: clean
 
 re:	fclean all
 
-.PHONY:	all, clean, fclean, re, bonus
+.PHONY:	all, clean, fclean, re
